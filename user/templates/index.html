@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}
+Login Page
+{% endblock %}
+
+{% block content %}
+
+
+
+<nav >
+    <ul class="navbar">
+        <li><a href="register.html">Signup</a></li>
+        <li><a href="login.html">Login</a></li>
+    </ul>
+</nav>
+
+<div class="container-fluid p-5">
+
+<h1 style="text-align: center;"></h1>
+
+    <div class="container mt-4">
+        <h2>Portfolio Projects</h2>
+
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>User</th>
+                <th>Project Name</th>
+                <th>Description</th>
+                <th>Project Link</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for project in profile %}
+            <tr>
+                <td>{{ project.id }}</td>
+                <td>{{ project.user }}</td>
+                <td>{{ project.project_name }}</td>
+                <td>{{ project.project_description  }}</td>
+
+                <td>
+                    {% if project.project_link %}
+                    <a href="{{ project.project_link }}" target="_blank">
+                        View
+                    </a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+
+
+
+</div>
+{% endblock %}
+
+

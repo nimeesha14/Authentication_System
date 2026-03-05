@@ -1,0 +1,45 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+Login Page
+{% endblock %}
+
+{% block content %}
+
+
+<form action="" method="post">
+    {% csrf_token %}
+    <div class="container p-3 shadow-lg">
+        <h1>Login</h1>
+        <div class="row">
+            <div class="col-sm-4">
+                {% for fields in form %}
+                    <label>{{fields.email}}</label><br>
+                    <label>{{fields.password}}</label><br>
+                {% endfor %}
+
+
+            </div>
+            <div class="col-sm-6">
+
+                <input type="email" class="form-control" placeholder="Email" name="email" value=""><br>
+                <input type="password" class="form-control" name="password" placeholder="Password" id="myInput"><br>
+                <input type="checkbox" class="password" onclick="myFunction()"> Show Password
+
+                {% load static %}
+                <script src="{% static 'main.js' %}"></script>
+
+            </div>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-dark">Login</button><br>
+        <p>Don't have an Account? <a href="register.html">Signup</a></p>
+    </div>
+
+
+
+
+</form>
+{% endblock %}
+
