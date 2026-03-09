@@ -8,6 +8,9 @@ class User(AbstractUser):
 
     username = None
     email = models.EmailField(max_length=50,unique=True)
+    otp = models.CharField(max_length=6, blank=True, null=True)
+    is_verified = models.BooleanField(default=False)
+
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
