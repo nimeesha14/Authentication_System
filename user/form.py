@@ -8,6 +8,8 @@ from django.contrib.auth.forms import UserCreationForm
 #         fields = ['first_name','last_name', 'email', 'password']
 
 
+
+
 class RegisterForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
 
