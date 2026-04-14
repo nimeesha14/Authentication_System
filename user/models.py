@@ -34,4 +34,43 @@ class UserProfile(models.Model):
 
 
 
+
+class Document(models.Model):
+    FILE_TYPE_CHOICES = [
+        ('pdf', 'PDF'),
+        ('doc', 'DOC'),
+        ('img', 'Image'),
+    ]
+
+    file = models.FileField(upload_to='')
+    name = models.CharField(max_length=255)
+
+    file_type = models.CharField(
+        max_length=10,
+        choices=FILE_TYPE_CHOICES,
+        default='pdf'
+    )
+
+    size = models.PositiveIntegerField(help_text="Size in KB")
+
+    added_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='documents_added'
+    )
+    added_date = models.DateTimeField(auto_now_add=True)
+
+    updated_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='documents_updated'
+    )
+    updated_date = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+
 # Create your models here.

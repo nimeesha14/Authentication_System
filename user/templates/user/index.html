@@ -1,74 +1,66 @@
-{% extends "user/base.html" %}
-
-<!--{% block title %}-->
-<!--Index Page-->
-<!--{% endblock %}-->
 
 {% block content %}
 
-<nav class="navbar navbar-dark bg-dark">
+<nav class="navbar navbar-dark bg-dark px-3">
     <div class="container-fluid">
-        <a class="navbar-brand">Portfolio Projects</a>
 
-        <div class="d-flex flex-row bd-dark mb-3">
-            <div class="p-2 bd-dark"></div>
-        </div>
+        <!-- Left: Brand -->
+        <a class="navbar-brand fw-semibold">Portfolio Projects</a>
+
+        <!-- Right: Auth Section -->
         {% if request.user.is_authenticated %}
-        <div class="d-flex flex-row-reverse bd-dark">
-            <div class="p-2 bd-dark"><a href="{% url 'logout' %}">Logout</a> </div>
+        <div class="d-flex align-items-center gap-3">
+
+            <!-- Avatar -->
+            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-semibold"
+                 style="width:36px; height:36px;">
+                {% if request.user.is_authenticated %}
+                    {% if request.user.first_name %}
+                        {{ request.user.first_name|first|upper }}
+                    {% else %}
+                        {{ request.user.username|first|upper }}
+                    {% endif %}
+                {% endif %}
+            </div>
+
+            <!-- User Name -->
+            <span class="text-white">
+                {% if request.user.get_full_name %}
+                    {{ request.user.get_full_name }}
+                {% else %}
+                    {{ request.user.username }}
+                {% endif %}
+            </span>
+
+            <!-- Logout -->
+            <a href="{% url 'logout' %}" class="btn btn-sm btn-outline-light">
+                Logout
+            </a>
+
         </div>
         {% else %}
-        <div class="d-flex flex-row-reverse bd-dark">
-            <div class="p-2 bd-dark"><a href="{% url 'login' %}">Login</a> </div>
-            <div class="p-2 bd-dark"><a href="{% url 'register' %}">Signup</a> </div>
+        <div class="d-flex align-items-center gap-2">
+
+            <a href="{% url 'login' %}" class="btn btn-sm btn-outline-light">
+                Login
+            </a>
+
+            <a href="{% url 'register' %}" class="btn btn-sm btn-primary">
+                Signup
+            </a>
+
         </div>
         {% endif %}
-
 
     </div>
 </nav>
 
-<div class="container-fluid p-5">
+{% include "user/file_upload.html" %}
 
-    <div class="container mt-4">
-        <h2 class="text-center">Portfolio Projects</h2>
 
-        {% if request.user.is_authenticated %}
 
-        <table class="table table-bordered table-striped">
-            <thead class="table-dark">
-            <tr>
-                <th>ID</th>
-                <th>User</th>
-                <th>Project Name</th>
-                <th>Project Link</th>
-                <th>Description</th>
-            </tr>
-            </thead>
 
-            <tbody>
-            {% for project in profile %}
-            <tr>
-                <td>{{ project.id }}</td>
-                <td>{{ project.user }}</td>
-                <td>{{ project.project_name }}</td>
-                <td>{{ project.project_description  }}</td>
 
-                <td>
-                    {% if project.project_url  %}
-                    <a href="{{ project.project_url  }}" target="_blank">
-                        View
-                    </a>
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-            </tbody>
-
-        </table>
-        {% endif %}
-    </div>
-</div>
 {% endblock %}
 
 

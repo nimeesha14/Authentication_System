@@ -1,9 +1,12 @@
 import random
+import json
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import JsonResponse
 from django.contrib import messages
 from django.views import View
 from django.shortcuts import render, redirect
-from user.models import User,UserProfile
-from user.form import RegisterForm,UserProfileForm
+from user.models import User,UserProfile,Document
+from user.form import RegisterForm,UserProfileForm,DocumentUploadForm
 from django.contrib.auth import authenticate, login
 from django.core.mail import send_mail
 from django.conf import settings
@@ -86,7 +89,7 @@ class LoginView(View):
             if user.is_verified:
                 login(request, user)
                 messages.success(request, "Logged in successfully.")
-                return redirect('index')
+                return redirect('document_list_upload')
             else:
                 messages.error(request, "User is not verified.")
                 return redirect('login')
@@ -102,20 +105,73 @@ class LogoutView(View):
         return redirect('login')
 
 
+#
+# class Userview(View):
+#     """Display user profile and form."""
+#     template_name = 'user/index.html'
+#     form_class = UserProfileForm
+#
+#     def get(self, request: HttpRequest) -> HttpResponse:
+#         """Render profile page and show projects if user is authenticated."""
+#         form = self.form_class()
+#
+#         if request.user.is_authenticated:
+#             profile = UserProfile.objects.filter(user=request.user)
+#         else:
+#             profile = []
+#
+#         return render(request, self.template_name, {'form': form, 'profile': profile})
 
-class Userview(View):
-    """Display user profile and form."""
-    template_name = 'user/index.html'
-    form_class = UserProfileForm
+class DocumentListUploadView(LoginRequiredMixin,View):
+    template_name = "user/index.html"
 
-    def get(self, request: HttpRequest) -> HttpResponse:
-        """Render profile page and show projects if user is authenticated."""
-        form = self.form_class()
+    def get(self, request):
+        print("---------------",request)
+        documents = Document.objects.filter(
+            added_by=request.user
+        ).order_by("-added_date")
 
-        if request.user.is_authenticated:
-            profile = UserProfile.objects.filter(user=request.user)
+
+        form = DocumentUploadForm()
+
+        return render(request, self.template_name, {
+            "documents": documents,
+            "form": form,
+        })
+
+    def post(self, request):
+        if not request.user.is_authenticated:
+            return redirect("login")
+
+        form = DocumentUploadForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            form.save(user=request.user)
+            messages.success(request, "File uploaded successfully.")
+            return redirect("document_list_upload")
+
+        documents = Document.objects.filter(
+            added_by=request.user
+        ).order_by("-added_date")
+
+        messages.error(request, "Please select a valid file.")
+
+        return render(request, self.template_name, {
+            "documents": documents,
+            "form": form,
+        })
+
+class DeleteSelectedDocumentsView(View):
+    def post(self, request, *args, **kwargs):
+        ids = request.POST.getlist("ids")
+
+        if ids:
+            Document.objects.filter(
+                id__in=ids,
+                added_by=request.user
+            ).delete()
+            messages.success(request, "Selected files deleted successfully.")
         else:
-            profile = []
+            messages.error(request, "Please select at least one file.")
 
-        return render(request, self.template_name, {'form': form, 'profile': profile})
-
+        return redirect("document_list_upload")

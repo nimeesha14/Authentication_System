@@ -1,0 +1,94 @@
+body.app-body {
+    background-color: #f6f7fb;
+    font-family: Arial, sans-serif;
+}
+
+.sidebar {
+    width: 250px;
+    min-height: 100vh;
+    padding-top: 10px;
+}
+
+.nav-link {
+    border-radius: 12px;
+    padding: 12px 14px;
+    color: #6c757d;
+}
+
+.nav-link:hover {
+    background: #f4f5ff;
+    color: #5b67f1;
+}
+
+
+.content-card {
+    border-radius: 18px;
+}
+
+.custom-tabs .nav-link {
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: #6b7280;
+    font-weight: 500;
+    border-radius: 0;
+}
+
+.custom-tabs .nav-link.active {
+    color: #5b67f1;
+    border-bottom: 2px solid #5b67f1;
+    background: transparent;
+}
+
+.search-input {
+    max-width: 260px;
+    border-radius: 8px;
+}
+
+.action-btn {
+    background: #14c98f;
+    color: white;
+    border-radius: 6px;
+    width: 46px;
+    height: 40px;
+    border: none;
+}
+
+.action-btn:hover {
+    background: #10b981;
+    color: white;
+}
+
+.custom-table thead th {
+    background: #eef1f5;
+    color: #495057;
+    font-weight: 600;
+    border-bottom: none;
+    padding: 16px;
+}
+
+.custom-table tbody td {
+    padding: 14px 16px;
+    vertical-align: middle;
+}
+
+.pagination-circle {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #6c73f7;
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+}
+
+.upload-drop-zone {
+    border: 2px dashed #d6d6d6;
+    border-radius: 8px;
+    min-height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
